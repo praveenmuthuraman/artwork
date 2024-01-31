@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art Institute of Chicago Artworks</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+   <link rel="stylesheet" href="css/style.css">
+   <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        .artwork {
+            margin: 20px 0;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="mt-4 mb-4">Art Institute of Chicago Artworks</h1>
+        <div id="artworks" class="row"></div>
+    </div>
+
+    <!-- Bootstrap JS and Popper.js (required for some Bootstrap components) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Fetch artworks from the API
+        fetch('https://api.artic.edu/api/v1/artworks')
+            .then(response => response.json())
+            .then(data => {
+                const artworks = data.data;
+
+                // Display artworks on the webpage
+                const artworksContainer = document.getElementById('artworks');
+
+                artworks.forEach(artwork => {
+                    const artworkElement = document.createElement('div');
+                    artworkElement.classList.add('col-md-4', 'artwork');
+
+                    const titleElement = document.createElement('h2');
+                    titleElement.textContent = artwork.title;
+
+                    const artistElement = document.createElement('p');
+                    artistElement.textContent = `Artist: ${artwork.artist_display}`;
+
+                    const imageElement = document.createElement('img');
+                    imageElement.src = artwork.thumbnail.url;
+                    imageElement.alt = artwork.title;
+
+                    artworkElement.appendChild(titleElement);
+                    artworkElement.appendChild(artistElement);
+                    artworkElement.appendChild(imageElement);
+
+                    artworksContainer.appendChild(artworkElement);
+                });
+            })
+            .catch(error => console.error('Error fetching artworks:', error));
+    </script>
+</body>
+
+</html>
